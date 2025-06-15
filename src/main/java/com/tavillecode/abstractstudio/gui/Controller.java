@@ -25,7 +25,16 @@ public class Controller {
 
     //初始化
     private void init() {
-        this.frame = new Frame();
+        this.frame = new Frame("抽象工坊 - Java控STM32(USART)");
+
+        System.out.println("Connecting...");
+        long start = System.currentTimeMillis();
+        UsartTools.portParameterOpen("COM5",9600);
+        long end = System.currentTimeMillis();
+        System.out.println("Time Escaped: "+(end-start) + " ms.");
+        Image icon = Toolkit.getDefaultToolkit().getImage("icon.png");
+        this.frame.setIconImage(icon);
+
         this.frame.setAlwaysOnTop(true);
         this.frame.setLayout(null);
         this.frame.setBounds(500,500,500,300);

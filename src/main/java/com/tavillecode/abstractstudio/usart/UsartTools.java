@@ -104,7 +104,7 @@ public class UsartTools {
         String dataSend = parameter;
 
         sendData(dataSend);
-        System.out.println("The data which is sent to STM32: " + dataSend);
+        System.out.println("The data which is sent to STM32: " + dataSend.replaceAll("\r\n","").replaceAll("@",""));
 
         // 休眠500ms，等待单片机反应
         //Thread.sleep(500);
