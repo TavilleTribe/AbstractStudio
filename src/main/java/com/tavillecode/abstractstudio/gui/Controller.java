@@ -23,6 +23,7 @@ public class Controller {
         this.addButton();
     }
 
+    //初始化
     private void init() {
         this.frame = new Frame();
         this.frame.setAlwaysOnTop(true);
@@ -34,6 +35,7 @@ public class Controller {
         this.frame.setVisible(true);
     }
 
+    //添加监听器
     private void addListener() {
         this.frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -44,12 +46,14 @@ public class Controller {
         });
     }
 
+    //添加可更改文本框
     private void addTextField() {
         this.textField = new TextField();
         this.textField.setBounds(20,100,200,30);
         this.frame.add(this.textField);
     }
 
+    //添加按钮
     private void addButton() {
         Button button = new Button("发送数据");
         button.setBounds(20,50,100,50);

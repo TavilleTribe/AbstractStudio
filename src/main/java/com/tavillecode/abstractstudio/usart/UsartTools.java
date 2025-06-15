@@ -4,7 +4,6 @@ import gnu.io.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -17,10 +16,7 @@ import java.util.Enumeration;
 public class UsartTools {
     public static SerialPort serialPort=null;
 
-    /*类方法 不可改变 不接受继承
-     * 扫描获取可用的串口
-     * 将可用串口添加至list并保存至list
-     */
+    //检测可使用串口
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static ArrayList<String> uartPortUseAbleFind() {
         //获取当前所有可用串口
@@ -35,16 +31,7 @@ public class UsartTools {
         return portNameList;
     }
 
-    /*
-     * 串口常见设置
-     * 1)打开串口
-     * 2)设置波特率 根据单板机的需求可以设置为57600 ...
-     * 3)判断端口设备是否为串口设备
-     * 4)端口是否占用
-     * 5)对以上条件进行check以后返回一个串口设置对象new UARTParameterSetup()
-     * 6)return:返回一个SerialPort一个实例对象，若判定该com口是串口则进行参数配置
-     *   若不是则返回SerialPort对象为null
-     */
+    //连接指定串口并调制波特率
     public static void portParameterOpen(String portName, int baudrate) {
         try {  //通过端口名识别串口
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
@@ -55,7 +42,7 @@ public class UsartTools {
                 System.out.println("This COM port is a serial port! The serial port name is: " + portName);
                 //进一步强制类型转换
                 serialPort=(SerialPort)commPort;
-                //设置baudrate 此处需要注意:波特率只能允许是int型 对于57600足够
+                //设置baudrate 此处需要注意:波特率只能允许是int型
                 //8位数据位
                 //1位停止位
                 //无奇偶校验
@@ -77,35 +64,6 @@ public class UsartTools {
      * 串口数据发送以及数据传输作为一个类
      * 该类做主要实现对数据包的传输至下单板机
      */
-
-    /*
-     * 上位机往单板机通过串口发送数据
-     * 串口对象 seriesPort
-     * 数据帧:dataPackage
-     * 发送的标志:数据未发送成功抛出一个异常
-     */
-    public static void uartSendDataToSerialPort(SerialPort serialPort,byte[] dataPackage) {
-        OutputStream out=null;
-        try {
-            out=serialPort.getOutputStream();
-            out.write(dataPackage);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            //关闭输出流
-            if(out!=null) {
-                try {
-                    out.close();
-                    out=null;
-                    //System.out.println("数据已发送完毕!");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     public static void sendData(String data) throws IOException {
         serialPort.getOutputStream().write(data.getBytes());
     }
@@ -135,8 +93,9 @@ public class UsartTools {
         return receiveDataPackage;
     }
 
+    //发送
     public static void action(String parameter) throws Exception {
-        // 打开串口
+        // 第一次操作时打开串口
         if (serialPort == null) {
             portParameterOpen("COM5", 9600);
         }
@@ -144,9 +103,6 @@ public class UsartTools {
         // 要发送的数据
         String dataSend = parameter;
 
-        int i=1;
-        //while(true) {
-        // 发送数据到单片机
         sendData(dataSend);
         System.out.println("The data which is sent to STM32: " + dataSend);
 
@@ -166,7 +122,7 @@ public class UsartTools {
         //}
     }
 
-    /**
+    /*
      * 关闭串口
      */
     public static void closePort() {
