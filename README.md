@@ -14,6 +14,7 @@
 - 需要将项目pack/jdk中两个dll文件放到你使用的jdk的jdk/bin目录下
 - 需要将项目pack中的RXTXComm.jar文件作为gradle依赖
 - 使用shadow插件打包至生成的jar中
+- 在Idea里运行，tmd不知道为什么，打包成jar运行不了
 
 ## ⚡快速食用
 
